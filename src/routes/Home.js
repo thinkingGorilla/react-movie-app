@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import Movie from "../components/Movie";
 import {IMAGE_BASE_URL} from '../config/constants';
 import {fetchGenres, fetchMovies} from "../config/tdmb";
+import styles from "./Home.module.css";
 
 function Home() {
     const [loading, setLoading] = useState(true);
@@ -37,8 +38,10 @@ function Home() {
         <div>
             {
                 loading
-                    ? <h1>Loading...</h1>
-                    : <div>
+                    ? <div className={styles.loader}>
+                        <span>Loading...</span>
+                    </div>
+                    : <div className={styles.movies}>
                         {
                             // JSX의 { } 안은 "값을 반환하는 자리"이므로, 문장을 끝내는 세미콜론(;)을 붙이면 안된다.
                             movies.map(movie =>

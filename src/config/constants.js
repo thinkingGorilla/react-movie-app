@@ -3,6 +3,8 @@
 // 또한 번들러에 따라 인라인할 환경 변수의 "접두어 규칙"이 다르다.
 // e.g. Webpack → NEXT_PUBLIC_API_KEY, REACT_APP_API_KEY
 export const ACCESS_TOKEN = process.env.REACT_APP_TMDB_API_ACCESS_TOKEN;
+// https://developers.themoviedb.org/3/
 export const API_BASE_URL = 'https://api.themoviedb.org/3';
 // https://developer.themoviedb.org/docs/image-basics
 export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+export const ROUTER_BASE_URL = process.env.PUBLIC_URL;

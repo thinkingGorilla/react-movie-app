@@ -2,6 +2,7 @@ import {useParams, useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import tmdbAPI from "../config/tdmb";
 import {IMAGE_BASE_URL} from "../config/constants";
+import styles from "./Detail.module.css";
 
 function Detail() {
     const [loading, setLoading] = useState(true);
@@ -36,36 +37,41 @@ function Detail() {
     }, []);
 
     return (
-        <div>
+        <div className={styles.container}>
             {loading ? (
-                <h1>Loading Movie Details...</h1>
+                <div className={styles.loader}>
+                    <span>Loading Movie Details...</span>
+                </div>
             ) : (
                 detail && (
-                    <div>
+                    <div className={styles.detail}>
                         {detail.poster_path && (
                             <img
                                 src={`${IMAGE_BASE_URL}${detail.poster_path}`}
                                 alt={detail.title}
-                                style={{width: '300px'}}
+                                className={styles.poster}
                             />
                         )}
 
-                        <h1>{detail.title}</h1>
-                        <p><strong>Release Date:</strong> {detail.release_date}</p>
-                        <p><strong>Rating:</strong> ⭐ {detail.vote_average}</p>
-
                         <div>
-                            <strong>Genres: </strong>
-                            {
-                                detail.genres
-                                    ? detail.genres.map(each => each.name).join(', ')
-                                    : "No genre information"
-                            }
-                        </div>
+                            <h1 className={styles.title}>{detail.title}</h1>
 
-                        <hr/>
-                        <h3>Overview</h3>
-                        <p>{detail.overview || "No overview"}</p>
+                            <div className={styles.meta}>
+                                📅 {detail.release_date} | ⭐ {detail.vote_average}
+                            </div>
+
+                            <div className={styles.genres}>
+                                <strong>Genres:</strong>{" "}
+                                {detail.genres
+                                    ? detail.genres.map(g => g.name).join(", ")
+                                    : "No genre information"}
+                            </div>
+
+                            <div className={styles.overview}>
+                                <h3>Overview</h3>
+                                <p>{detail.overview || "No overview"}</p>
+                            </div>
+                        </div>
                     </div>
                 )
             )}
