@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import tmdbAPI from "../config/tdmb";
 import {IMAGE_BASE_URL} from "../config/constants";
 import styles from "./Detail.module.css";
+import {formatMoney} from "../config/util";
 
 function Detail() {
     const [loading, setLoading] = useState(true);
@@ -55,21 +56,60 @@ function Detail() {
 
                         <div>
                             <h1 className={styles.title}>{detail.title}</h1>
-
                             <div className={styles.meta}>
-                                📅 {detail.release_date} | ⭐ {detail.vote_average}
+                                <span>📅 {detail.release_date}</span>
+                                <span>🎬 {detail.runtime} min</span>
+                                <span>📈 {detail.popularity?.toFixed(1)}</span>
+                                <span>💰 {formatMoney(detail.budget)}</span>
+                                <span className={styles.rating}>
+                                    ⭐ {detail.vote_average}
+                                    <small>({detail.vote_count?.toLocaleString()} votes)</small>
+                                </span>
                             </div>
-
                             <div className={styles.genres}>
-                                <strong>Genres:</strong>{" "}
-                                {detail.genres
-                                    ? detail.genres.map(g => g.name).join(", ")
-                                    : "No genre information"}
+                                <h3>Genres</h3>
+                                <ul className={styles.genreList}>
+                                    {detail.genres && detail.genres.length > 0
+                                        ? (
+                                            detail.genres.map((genre) => (
+                                                <li key={genre.id} className={styles.genreChip}>
+                                                    {genre.name}
+                                                </li>
+                                            ))
+                                        )
+                                        : (<li>No genre information</li>)
+                                    }
+                                </ul>
                             </div>
-
                             <div className={styles.overview}>
                                 <h3>Overview</h3>
                                 <p>{detail.overview || "No overview"}</p>
+                            </div>
+                            <div className={styles.production}>
+                                <h3>Production Companies</h3>
+                                <div className={styles.productionList}>
+                                    {detail.production_companies && detail.production_companies.length > 0
+                                        ? detail.production_companies
+                                            .map(company => (
+                                                <div key={company.id} className={styles.company}>
+                                                    {company.logo_path
+                                                        ? (
+                                                            <img
+                                                                src={`${IMAGE_BASE_URL.replace('/w500', '/w200')}${company.logo_path}`}
+                                                                alt={company.name}
+                                                                className={styles.companyLogo}
+                                                            />
+                                                        )
+                                                        : (
+                                                            <div className={styles.companyFallback}>
+                                                                {company.name}
+                                                            </div>
+                                                        )}
+                                                </div>
+                                            ))
+                                        : <p>No production company information</p>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
